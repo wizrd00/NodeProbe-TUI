@@ -1,0 +1,9 @@
+*.swp
+*.o
+*.bin
+*.elf
+logfile*
+.venv/
+build/
+binary/
+tmp/
