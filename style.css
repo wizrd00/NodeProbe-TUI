@@ -1,0 +1,95 @@
+#VerticalGroup1 {
+    width: 100%;
+    height: 100%;
+    margin: 1;
+}
+
+#VerticalGroup2 {
+    width: 20%;
+    height: 100%;
+    margin: 1;
+}
+
+#VerticalGroup3 {
+    width: 45%;
+    height: 100%;
+    margin: 1;
+}
+
+#HorizontalGroup1 {
+    width: 100%;
+    height: 50%;
+    margin: 1;
+}
+
+#HorizontalGroup2 {
+    width: 100%;
+    height: 50%;
+    margin: 1;
+}
+
+#HorizontalGroup3 {
+    width: 100%;
+    height: 100%;
+    margin: 5;
+    border: solid blue
+}
+
+#ManualLabel {
+    width: 25%;
+    height: 100%;
+    margin: 1;
+}
+
+#VerticalScroll1 {
+    width: 25%;
+    height: 100%;
+    margin: 1;
+}
+
+#RangeInput {
+    width: 100%;
+    height: 20%;
+    margin: 4;
+}
+
+#Scan {
+    width: 40%;
+    height: 20%;
+    margin: 4;
+}
+
+#HostList {
+    width: 60%;
+    height: 100%;
+}
+
+#LogList {
+    width: 40%;
+    height: 100%;
+}
+
+#HostInfo {
+    width: 80%;
+    height: 100%;
+}
+
+#ProbeAll {
+    width: 20%;
+    height: 25%;
+}
+
+#ProbeSelected {
+    width: 20%;
+    height: 25%;
+}
+
+#ClearLogs {
+    width: 20%;
+    height: 25%;
+}
+
+#BackMenu {
+    width: 20%;
+    height: 25%;
+}

@@ -3,6 +3,7 @@
 *.bin
 *.elf
 logfile*
+__pycache__/
 .venv/
 build/
 binary/
