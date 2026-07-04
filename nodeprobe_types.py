@@ -15,6 +15,15 @@ TABLE_KEYS = ("IP", "MAC", "RTT")
 Mac = c_ubyte * 6
 IPv4 = c_ubyte * 4
 
+class NodeProbeError(Exception) :
+	def __init__(self, message, stat) :
+		super().__init__(message)
+		self.message = message
+		self.stat = stat
+
+	def __str__(self) :
+		return f"{self.message}; stat = {self.stat}"
+
 class arpman_context_t(Structure) :
 	_fields_ = [
 		("sockfd", c_int),
@@ -67,5 +76,9 @@ class udpman_context_t(Structure) :
 		("dst_port", c_ushort)
 	]
 
+
+def CHECK_STAT(stat : c_int, msg : str) :
+	if (stat != 0) :
+		raise NodeProbeError(msg, stat)
 
 nodeprobe = cdll.LoadLibrary(f"library/libnodeprobe-{getoutput("ldd --version 2>&1 | grep -qi musl && echo musl || echo glibc")}.so")
