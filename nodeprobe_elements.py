@@ -3,33 +3,6 @@ from rich.text import Text
 from textual.widgets import Label, Input, Button, DataTable, Log, Collapsible
 
 
-class ManualLabel(Label) :
-	...
-
-
-class RangeInput(Input) :
-	...
-
-
-class Scan(Button) :
-	...
-
-
-class ProbeAll(Button) :
-	...
-
-class ProbeSelected(Button) :
-	...
-
-
-class ClearLogs(Button) :
-	...
-
-
-class BackMenu(Button) :
-	...
-
-
 class HostList(DataTable) :
 	def compose(self) -> ComposeResult :
 		yield DataTable()
