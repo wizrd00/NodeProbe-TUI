@@ -1,28 +1,25 @@
+from collections.abc import Iterator
 from ctypes import *
+from enum import Enum
 from subprocess import getoutput
-
-TITLE = "NodeProbe-TUI"
-
-MAN = """
-Manual
-
-1.Specify an IP range
-...
-"""
-
-TABLE_KEYS = ("IP", "MAC", "RTT")
 
 Mac = c_ubyte * 6
 IPv4 = c_ubyte * 4
 
-class NodeProbeError(Exception) :
-	def __init__(self, message, stat) :
-		super().__init__(message)
-		self.message = message
-		self.stat = stat
+class status_t(Enum) :
+	SUCCESS = 0
+	FAILURE = 1
+	TIMEOUT = 2
+	INVALID = 3
+	ERRALOC = 4
+	ERRTIME = 5
+	ERRSOCK = 6
+	ERRBIND = 7
+	ERRSEND = 8
+	ERRRECV = 9
+	ERRCLOS = 10
+	ERRPOLL = 11
 
-	def __str__(self) :
-		return f"{self.message}; stat = {self.stat}"
 
 class arpman_context_t(Structure) :
 	_fields_ = [
@@ -77,8 +74,4 @@ class udpman_context_t(Structure) :
 	]
 
 
-def CHECK_STAT(stat : c_int, msg : str) :
-	if (stat != 0) :
-		raise NodeProbeError(msg, stat)
-
-nodeprobe = cdll.LoadLibrary(f"library/libnodeprobe-{getoutput("ldd --version 2>&1 | grep -qi musl && echo musl || echo glibc")}.so")
+lib = cdll.LoadLibrary(f"library/libnodeprobe-{getoutput("ldd --version 2>&1 | grep -qi musl && echo musl || echo glibc")}.so")

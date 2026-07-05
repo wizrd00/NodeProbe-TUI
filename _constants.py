@@ -1,0 +1,2 @@
+TITLE = "NodeProbe-TUI"
+ARPMAN_TIMEOUT = 200 #ms

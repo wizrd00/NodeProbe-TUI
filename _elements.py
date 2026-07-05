@@ -1,4 +1,4 @@
-from nodeprobe_types import *
+from _types import *
 from rich.text import Text
 from textual.widgets import Label, Input, Button, DataTable, Log, Collapsible
 

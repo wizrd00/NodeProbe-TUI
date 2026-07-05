@@ -1,5 +1,5 @@
-from nodeprobe_types import *
-from nodeprobe_menus import *
+from _types import *
+from _menus import *
 from textual.app import App
 
 
