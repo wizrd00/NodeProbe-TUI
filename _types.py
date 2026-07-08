@@ -21,6 +21,17 @@ class status_t(Enum) :
 	ERRPOLL = 11
 
 
+class NodeProbeResult :
+	host_mac : Mac = None
+	pingable : bool = None
+	open_tcp_ports : list = None
+	open_udp_ports : list = None
+	arpman_time : float = None
+	icmpman_time : float = None
+	tcpman_time : float = None
+	udpman_time : float = None
+
+
 class arpman_context_t(Structure) :
 	_fields_ = [
 		("sockfd", c_int),

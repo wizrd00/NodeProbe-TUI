@@ -5,4 +5,4 @@ class NodeProbeError(Exception) :
 		self.stat = stat
 
 	def __str__(self) :
-		return f"{self.message}; stat = {self.stat}"
+		return f"[{self.stat}] {self.message}"
