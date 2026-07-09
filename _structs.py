@@ -21,7 +21,7 @@ class status_t(Enum) :
 	ERRPOLL = 11
 
 
-class NodeProbeResult:
+class NodeProbeResult :
 	def __init__(self, ip : str) :
 		self.host_ip : str = ip
 		self.host_mac : Mac = None
@@ -32,6 +32,23 @@ class NodeProbeResult:
 		self.icmpman_time : float = None
 		self.tcpman_time : float = None
 		self.udpman_time : float = None
+
+	def __str__(self) :
+		text = [
+			f"host_ip = {self.host_ip}",
+			f"host_mac = {":".join([f"{i:02X}" for i in self.host_mac])}",
+			f"the host {"is" if (self.pingable) else "is not"} pingable",
+			f"open_tcp_ports = {self.open_tcp_ports}",
+			f"open_udp_ports = {self.open_udp_ports}",
+			f"arpman_time = {self.arpman_time}",
+			f"icmpman_time = {self.icmpman_time}",
+			f"tcpman_time = {self.tcpman_time}",
+			f"udpman_time = {self.udpman_time}"
+		] if (self.host_mac) else [
+			f"host_ip = {self.host_ip}",
+			f"the host doesn't seem to be alive"
+		]
+		return "\n".join(text)
 
 
 class arpman_context_t(Structure) :

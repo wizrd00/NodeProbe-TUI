@@ -18,9 +18,9 @@ def task_runner(tasks : NodeProbeTaskList, results : NodeProbeResultList) :
 
 
 class NodeProbeTask :
-	def __init__(self, iface : str, gateway_mac : str, ip : str, tcp_ports : Iterator[int], udp_ports : Iterator[int], ping : bool) :
+	def __init__(self, iface : str, out_mac : str, ip : str, tcp_ports : Iterator[int], udp_ports : Iterator[int], ping : bool) :
 		self.iface = iface
-		self.out_mac = gateway_mac
+		self.out_mac = out_mac
 		self.ip = ip
 		self.tcp_ports = tcp_ports
 		self.udp_ports = udp_ports
@@ -118,9 +118,9 @@ class NodeProbeTaskList :
 
 
 class NodeProbe :
-	def __init__(self, iface : str, gateway_mac : str, ips : Iterator[str], tcp_ports : Iterator[int], udp_ports : Iterator[int], ping : bool) :
+	def __init__(self, iface : str, out_mac : str, ips : Iterator[str], tcp_ports : Iterator[int], udp_ports : Iterator[int], ping : bool) :
 		self.iface = iface
-		self.out_mac = gateway_mac
+		self.out_mac = out_mac
 		self.ips = ips
 		self.tcp_ports = tcp_ports
 		self.udp_ports = udp_ports
@@ -138,7 +138,7 @@ class NodeProbe :
 			self.tasks.add_task(
 				NodeProbeTask(
 					iface = self.iface,
-					gateway_mac = self.out_mac,
+					out_mac = self.out_mac,
 					ip = ip,
 					tcp_ports = self.tcp_ports,
 					udp_ports = self.udp_ports,
@@ -157,11 +157,9 @@ class NodeProbe :
 		for thread in self.threads :
 			thread.start()
 
-
 probe = NodeProbe(
 	iface = "wlo1",
-	#gateway_mac = "5e:79:e0:4e:10:86",
-	gateway_mac = "ff:ff:ff:ff:ff:ff",
+	out_mac = "ff:ff:ff:ff:ff:ff",
 	ips = ["10.28.42.66", "10.28.42.195"],
 	tcp_ports = [21, 22, 80, 2121, 8080],
 	udp_ports = [53, 67, 123],
