@@ -1,9 +1,11 @@
 from _structs import *
+from _core import *
+from _tools import *
 from _menus import *
 from textual.app import App
 
 
-class NodeProbe(App) :
+class NodeProbeTUI(App) :
 	BINDINGS = [("t", "switch_theme", "Switch Theme")]
 	CSS_PATH = "style.css"
 
@@ -13,6 +15,13 @@ class NodeProbe(App) :
 	def on_button_pressed(self, event : Button.Pressed) -> None :
 		match (event.button.id) :
 			case "Scan" :
+				ips = self.query_one("#RangeInput")
+				if (not check_ip_format(ips.value)) :
+					self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range")
+					return
+				self.probe = NodeProbe(
+					# TODO
+				)
 				self.push_screen(MonitorMenu())
 			case "ProbeAll" :
 				...
@@ -28,5 +37,5 @@ class NodeProbe(App) :
 
 
 if __name__ == "__main__" :
-	app = NodeProbe();
+	app = NodeProbeTUI();
 	app.run()
