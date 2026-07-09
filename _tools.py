@@ -55,3 +55,6 @@ def get_src_ip(iface : str) -> str :
 			return addr.address
 	# there is no IP address
 	raise ValueError(f"there is no IP address assocaited to \"{iface}\"")
+
+def check_ip_format(ip : str) -> bool :
+	return True

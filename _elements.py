@@ -1,4 +1,4 @@
-from _types import *
+from _structs import *
 from rich.text import Text
 from textual.widgets import Label, Input, Button, DataTable, Log, Collapsible
 

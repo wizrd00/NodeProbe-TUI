@@ -1,4 +1,5 @@
 TITLE = "NodeProbe-TUI"
+MAN = "Manual"
 ARPMAN_TIMEOUT = 400 #ms
 ICMPMAN_TIMEOUT = 500 #ms
 TCPMAN_TIMEOUT = 500 #ms

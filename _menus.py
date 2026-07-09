@@ -1,4 +1,4 @@
-from _types import *
+from _structs import *
 from _elements import *
 from _core import *
 from textual import on
@@ -7,6 +7,43 @@ from textual.app import ComposeResult
 from textual.containers import VerticalGroup, HorizontalGroup, VerticalScroll
 from textual.validation import Function
 from textual.widgets import Header, Footer, Checkbox
+
+
+class MainMenu(Screen) :
+	def compose(self) -> ComposeResult :
+		yield Header(icon = " ")
+		with HorizontalGroup(id = "HorizontalGroup3") :
+			yield Label(MAN, id = "ManualLabel")
+			with VerticalScroll(id = "VerticalScroll1") :
+				for _ in range(20) :
+					yield Checkbox("hello")
+			with VerticalGroup(id = "VerticalGroup3") :
+				yield Input(
+					placeholder = "192.168.1.1/24",
+					type = "text",
+					validators = [
+						Function(check_ip_format, "Invalid IPv4 address range")
+					],
+					id = "RangeInput"
+				)
+				yield Label("Enter a valid IPv4 range", id = "RangeInputStatus")
+				yield Button(label = "Scan", id = "Scan")
+
+		yield Footer()
+
+	def on_mount(self) -> None :
+		self.title = TITLE
+
+	def on_checkbox_changed(self, event : Checkbox.Changed) -> None :
+		...
+
+	@on(Input.Submitted)
+	def check_range_input(self, event : Input.Submitted) -> None :
+		if not event.validation_result.is_valid :
+			self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range")
+		else :
+			self.query_one("#RangeInputStatus").update("Press Scan")
+
 
 class MonitorMenu(Screen) :
 	def compose(self) -> ComposeResult :
@@ -29,39 +66,3 @@ class MonitorMenu(Screen) :
 
 	def on_data_table_cell_selected(self, event : DataTable.CellSelected) -> None :
 		...
-
-
-class MainMenu(Screen) :
-	def compose(self) -> ComposeResult :
-		yield Header(icon = " ")
-		with HorizontalGroup(id = "HorizontalGroup3") :
-			yield Label(MAN, id = "ManualLabel")
-			with VerticalScroll(id = "VerticalScroll1") :
-				for _ in range(20) :
-					yield Checkbox("hello")
-			with VerticalGroup(id = "VerticalGroup3") :
-				yield Input(
-					placeholder = "192.168.1.1/24",
-					type = "text",
-					validators = [
-						Function(NodeProbeIface.check_input, "Invalid IPv4 address range")
-					],
-					id = "RangeInput"
-				)
-				yield Label("Enter a valid IPv4 range", id = "RangeInputStatus")
-				yield Button(label = "Scan", id = "Scan")
-
-		yield Footer()
-
-	def on_mount(self) -> None :
-		self.title = TITLE
-
-	def on_checkbox_changed(self, event : Checkbox.Changed) -> None :
-		...
-
-	@on(Input.Submitted)
-	def check_range_input(self, event : Input.Submitted) -> None :
-		if not event.validation_result.is_valid :
-			self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range")
-		else :
-			self.query_one("#RangeInputStatus").update("Press Scan")

@@ -131,7 +131,7 @@ class NodeProbe :
 		self.threads = []
 
 	def is_done(self) :
-		return threading.active_count() - 1 == 0
+		return all([not thread.is_alive() for thread in self.threads])
 
 	def run(self) :
 		for ip in self.ips :

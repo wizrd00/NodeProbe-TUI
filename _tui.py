@@ -1,4 +1,4 @@
-from _types import *
+from _structs import *
 from _menus import *
 from textual.app import App
 
