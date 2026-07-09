@@ -1,8 +1,8 @@
-from _types import *
+from _structs import *
 from _exceptions import NodeProbeError
 from ctypes import c_int, c_size_t
 from psutil import net_if_addrs, net_if_stats
-from socket import AF_INET, AF_LINK, if_nametoindex
+from socket import AF_INET, AF_PACKET, if_nametoindex
 from re import match
 
 def CHECK_STAT(stat : c_int, msg : str) :
@@ -14,6 +14,11 @@ def get_ifindex(iface : str) -> c_int :
 
 def get_timeout(timeout : int) -> c_int :
 	return c_int(timeout)
+
+def get_id(id : int) -> c_ushort :
+	if (id not in range(0, 65536)) :
+		raise ValueError(f"the \"id\" argument with value \"{id}\" must be a 16-bit number")
+	return c_ushort(id)
 
 def get_mac(mac : str) -> Mac :
 	if (not match(r"^((?:[a-fA-F0-9]{2}[:]){5}[a-fA-F0-9]{2})$", mac)) :
@@ -35,16 +40,16 @@ def get_mtu(iface : str) -> c_size_t :
 	return c_size_t(stats[iface].mtu)
 
 def get_src_mac(iface : str) -> str :
-	addrs = net_if_addrs()
+	addrs = net_if_addrs()[iface]
 	for addr in addrs :
-		if (addr.family == AF_LINK) :
+		if (addr.family == AF_PACKET) :
 			return addr.address
 	# there is no MAC address
 	raise ValueError(f"there is no MAC address assocaited to \"{iface}\"!")
 
 
 def get_src_ip(iface : str) -> str :
-	addrs = net_if_addrs()
+	addrs = net_if_addrs()[iface]
 	for addr in addrs :
 		if (addr.family == AF_INET) :
 			return addr.address

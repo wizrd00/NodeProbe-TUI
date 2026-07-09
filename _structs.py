@@ -21,15 +21,17 @@ class status_t(Enum) :
 	ERRPOLL = 11
 
 
-class NodeProbeResult :
-	host_mac : Mac = None
-	pingable : bool = None
-	open_tcp_ports : list = None
-	open_udp_ports : list = None
-	arpman_time : float = None
-	icmpman_time : float = None
-	tcpman_time : float = None
-	udpman_time : float = None
+class NodeProbeResult:
+	def __init__(self, ip : str) :
+		self.host_ip : str = ip
+		self.host_mac : Mac = None
+		self.pingable : bool = None
+		self.open_tcp_ports : list = []
+		self.open_udp_ports : list = []
+		self.arpman_time : float = None
+		self.icmpman_time : float = None
+		self.tcpman_time : float = None
+		self.udpman_time : float = None
 
 
 class arpman_context_t(Structure) :
