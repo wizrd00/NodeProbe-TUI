@@ -156,25 +156,25 @@ class NodeProbe :
 			)
 		for thread in self.threads :
 			thread.start()
-
-probe = NodeProbe(
-	iface = "wlo1",
-	out_mac = "ff:ff:ff:ff:ff:ff",
-	ips = ["10.28.42.66", "10.28.42.195"],
-	tcp_ports = [21, 22, 80, 2121, 8080],
-	udp_ports = [53, 67, 123],
-	ping = True
-)
-print("exec probe.run()")
-probe.run()
-while (not probe.is_done()) :
-	print("alive threads count %d" % threading.active_count())
-	print("not done yet")
-	time.sleep(0.5)
-
-while (True) :
-	output = probe.results.get_result()
-	if (not output) :
-		break
-	result, error = output
-	breakpoint()
+#
+#probe = NodeProbe(
+#	iface = "wlo1",
+#	out_mac = "ff:ff:ff:ff:ff:ff",
+#	ips = ["10.28.42.66", "10.28.42.195"],
+#	tcp_ports = [21, 22, 80, 2121, 8080],
+#	udp_ports = [53, 67, 123],
+#	ping = True
+#)
+#print("exec probe.run()")
+#probe.run()
+#while (not probe.is_done()) :
+#	print("alive threads count %d" % threading.active_count())
+#	print("not done yet")
+#	time.sleep(0.5)
+#
+#while (True) :
+#	output = probe.results.get_result()
+#	if (not output) :
+#		break
+#	result, error = output
+#	breakpoint()
