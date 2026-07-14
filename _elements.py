@@ -1,6 +1,6 @@
 from _structs import *
 from rich.text import Text
-from textual.widgets import Label, Input, Button, DataTable, Log, Collapsible
+from textual.widgets import DataTable, Log, Collapsible, Checkbox
 
 
 class HostList(DataTable) :
@@ -28,4 +28,5 @@ class HostInfo(Collapsible) :
 		yield Collapsible()
 
 
-
+class PortCheckbox(Checkbox) :
+	BUTTON_INNER = "+"

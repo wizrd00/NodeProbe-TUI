@@ -11,7 +11,7 @@
 }
 
 #VerticalGroup3 {
-    width: 45%;
+    width: 70%;
     height: 100%;
     margin: 1;
 }
@@ -32,37 +32,37 @@
     width: 100%;
     height: 100%;
     margin: 5;
-    border: solid blue
-}
-
-#ManualLabel {
-    width: 25%;
-    height: 100%;
-    margin: 1;
+    border: round #002b36
 }
 
 #VerticalScroll1 {
-    width: 25%;
+    width: 20%;
     height: 100%;
-    margin: 1;
+    margin: 4 4;
 }
 
 #RangeInput {
     width: 100%;
     height: 20%;
-    margin: 4;
+    margin: 2 4;
+}
+
+#ManualLabel {
+    width: 100%;
+    height: 20%;
+    margin: 0 8;
 }
 
 #RangeInputStatus {
     width: 100%;
     height: 20%;
-    margin: 4;
+    margin: 0 8;
 }
 
 #Scan {
     width: 40%;
     height: 20%;
-    margin: 4;
+    margin: 2 4;
 }
 
 #HostList {
@@ -99,3 +99,19 @@
     width: 20%;
     height: 25%;
 }
+
+#SelectLabel {
+    margin: 2 10;
+    border: round #002b36;
+}
+
+CheckBox {
+    width: 100%;
+}
+
+ListView {
+    margin: 2 10;
+    border: round #002b36;
+}
+
+

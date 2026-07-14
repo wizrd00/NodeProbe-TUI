@@ -58,3 +58,19 @@ def get_src_ip(iface : str) -> str :
 
 def check_ip_format(ip : str) -> bool :
 	return True
+
+def get_input_placeholder(iface : str) -> str :
+	# TODO
+	return "192.168.1.1/24"
+
+def get_suggestion_ports() -> list[tuple[int, str]] :
+	# TODO
+	# open json file and read ports
+	return [
+		(21, "TCP", "FTP"),
+		(22, "TCP", "SSH"),
+		(53, "UDP", "DNS")
+	]
+
+def get_ifaces() -> dict_keys[str] :
+	return net_if_addrs().keys()

@@ -1,4 +1,6 @@
 from _structs import *
+from _constants import *
+from _globals import *
 from _core import *
 from _tools import *
 from _menus import *
@@ -13,15 +15,12 @@ class NodeProbeTUI(App) :
 		self.push_screen((MainMenu()))
 
 	def on_button_pressed(self, event : Button.Pressed) -> None :
+		global IFACE, PORTS, IP_INPUT_VALUE
 		match (event.button.id) :
 			case "Scan" :
-				ips = self.query_one("#RangeInput")
-				if (not check_ip_format(ips.value)) :
-					self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range")
+				if (not check_ip_format(IP_INPUT_VALUE)) :
+					self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range ▲")
 					return
-				self.probe = NodeProbe(
-					# TODO
-				)
 				self.push_screen(MonitorMenu())
 			case "ProbeAll" :
 				...
