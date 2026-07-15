@@ -2,8 +2,9 @@ from _structs import *
 from _exceptions import NodeProbeError
 from ctypes import c_int, c_size_t
 from psutil import net_if_addrs, net_if_stats
-from socket import AF_INET, AF_PACKET, if_nametoindex
+from socket import AF_INET, AF_PACKET, if_nametoindex, inet_pton
 from re import match
+from json import load
 
 def CHECK_STAT(stat : c_int, msg : str) :
 	if (stat != status_t.SUCCESS) :
@@ -57,20 +58,35 @@ def get_src_ip(iface : str) -> str :
 	raise ValueError(f"there is no IP address assocaited to \"{iface}\"")
 
 def check_ip_format(ip : str) -> bool :
-	return True
+	pat = [
+		r"^((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d)|(?!\d))){4}(/([12]?\d|3[0-2]))?$",
+		r"^((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d))){3}((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)-(1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d))?$",
+		r"^(((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d)|(?!\d))){4}(\ |$)){1,}$"
+	]
+	return True if (match(pat[0], ip) or match(pat[1], ip) or match(pat[2], ip)) else False
 
 def get_input_placeholder(iface : str) -> str :
-	# TODO
+	for addr in net_if_addrs()[iface] :
+		if (addr.family != AF_INET) :
+			continue
+		a = inet_pton(AF_INET, addr.address)
+		b = inet_pton(AF_INET, addr.netmask)
+		c = int.from_bytes(b)
+		net_sec = ".".join([str(a[i] & b[i]) for i in range(4)])
+		count = 0
+		for i in range(32) :
+			count += 1 if ((1 << i) & c != 0) else 0
+		return f"{net_sec}/{count}"
 	return "192.168.1.1/24"
 
-def get_suggestion_ports() -> list[tuple[int, str]] :
-	# TODO
-	# open json file and read ports
-	return [
-		(21, "TCP", "FTP"),
-		(22, "TCP", "SSH"),
-		(53, "UDP", "DNS")
-	]
+def get_suggestion_ports() -> list[tuple[int, str, str]] :
+	ports = []
+	with open("ports.json", "r") as file :
+		tmp = load(file)
+	for k, v in tmp.items() :
+		for i in v :
+			ports.append((i["port"], k, i["service"]))
+	return ports
 
 def get_ifaces() -> dict_keys[str] :
 	return net_if_addrs().keys()

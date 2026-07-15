@@ -17,11 +17,6 @@ class NodeProbeTUI(App) :
 	def on_button_pressed(self, event : Button.Pressed) -> None :
 		global IFACE, PORTS, IP_INPUT_VALUE
 		match (event.button.id) :
-			case "Scan" :
-				if (not check_ip_format(IP_INPUT_VALUE)) :
-					self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range ▲")
-					return
-				self.push_screen(MonitorMenu())
 			case "ProbeAll" :
 				...
 			case "ProbeSelected" :

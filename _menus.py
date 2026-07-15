@@ -21,9 +21,10 @@ class MainMenu(Screen) :
 			if (self.selected in get_ifaces()) :
 				IFACE = self.selected
 				with VerticalScroll(id = "VerticalScroll1") :
+					yield PortCheckbox("Ping", id = "PingCheckbox")
 					ports_list = get_suggestion_ports()
 					for port, trans, proto in ports_list :
-						obj = PortCheckbox(f"{port} {proto} {trans} port")
+						obj = PortCheckbox(f"\[{trans}] {port} {proto}")
 						obj.port_value = (port, trans)
 						yield obj
 				with VerticalGroup(id = "VerticalGroup3") :
@@ -56,8 +57,17 @@ class MainMenu(Screen) :
 	def on_mount(self) -> None :
 		self.title = TITLE
 
+	def on_button_pressed(self, event : Button.Pressed) -> None :
+		global IP_INPUT_VALUE
+		if (event.button.id == "Scan") :
+			if (not check_ip_format(IP_INPUT_VALUE)) :
+				self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range ▲")
+				return
+			self.app.push_screen(MonitorMenu())
 	def on_checkbox_changed(self, event : Checkbox.Changed) -> None :
-		if (event.checkbox.value) :
+		if (event.checkbox.id == "PingCheckbox") :
+			PING = event.checkbox.value
+		elif (event.checkbox.value) :
 			PORTS.append(event.checkbox.port_value)
 		else :
 			PORTS.remove(event.checkbox.port_value) if (event.checkbox.port_value in PORTS) else ...
@@ -66,7 +76,7 @@ class MainMenu(Screen) :
 		self.selected = event.item.text
 
 	@on(Input.Submitted)
-	def check_range_input(self, event : Input.Submitted) -> None :
+	def check_submitted_range_input(self, event : Input.Submitted) -> None :
 		global IP_INPUT_VALUE
 		ip_input_stat = self.query_one("#RangeInputStatus")
 		if not event.validation_result.is_valid :
@@ -75,6 +85,13 @@ class MainMenu(Screen) :
 		else :
 			ip_input_stat.update("Press Scan ▼")
 			ip_input = self.query_one("#RangeInput")
+			IP_INPUT_VALUE = ip_input.value
+
+	@on(Input.Changed)
+	def check_changed_range_input(self, event : Input.Changed) -> None :
+		global IP_INPUT_VALUE
+		ip_input = self.query_one("#RangeInput")
+		if (check_ip_format(ip_input.value)) :
 			IP_INPUT_VALUE = ip_input.value
 
 
