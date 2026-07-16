@@ -1,4 +1,6 @@
 from _structs import *
+from _constants import *
+from _tools import *
 from rich.text import Text
 from textual.widgets import DataTable, Log, Collapsible, Checkbox
 
@@ -8,6 +10,7 @@ class HostList(DataTable) :
 		yield DataTable()
 
 	def on_mount(self) -> None :
+		global TABLE_KEYS
 		self.add_columns(*TABLE_KEYS)
 		self.add_row(*(Text("192.168.43.81"), Text("E7:AB:CD:EF:12:45"), 123))
 		self.add_row(*(Text("192.168.43.221"), Text("E7:AB:CD:EF:12:45"), 123))

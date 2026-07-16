@@ -4,3 +4,5 @@ ARPMAN_TIMEOUT = 400 #ms
 ICMPMAN_TIMEOUT = 500 #ms
 TCPMAN_TIMEOUT = 500 #ms
 UDPMAN_TIMEOUT = 500 #ms
+
+TABLE_KEYS = ["IPv4 Address", "MAC Address", "Pingable"]

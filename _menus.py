@@ -4,6 +4,7 @@ from _globals import *
 from _elements import *
 from _core import *
 from _tools import *
+from rich.text import Text
 from textual import on
 from textual.screen import Screen
 from textual.app import ComposeResult
@@ -24,7 +25,7 @@ class MainMenu(Screen) :
 					yield PortCheckbox("Ping", id = "PingCheckbox")
 					ports_list = get_suggestion_ports()
 					for port, trans, proto in ports_list :
-						obj = PortCheckbox(f"\[{trans}] {port} {proto}")
+						obj = PortCheckbox(Text(f"[{trans}] {port} {proto}"))
 						obj.port_value = (port, trans)
 						yield obj
 				with VerticalGroup(id = "VerticalGroup3") :
@@ -58,12 +59,21 @@ class MainMenu(Screen) :
 		self.title = TITLE
 
 	def on_button_pressed(self, event : Button.Pressed) -> None :
-		global IP_INPUT_VALUE
+		global IFACE, OUT_MAC, IP_INPUT_VALUE, PORTS, PING, NODEPROBE
 		if (event.button.id == "Scan") :
 			if (not check_ip_format(IP_INPUT_VALUE)) :
 				self.query_one("#RangeInputStatus").update("You must enter a valid IPv4 range ▲")
 				return
+			NODEPROBE = NodeProbe(
+				iface = IFACE,
+				out_mac = OUT_MAC,
+				ips = get_ip_range(IP_INPUT_VALUE),
+				tcp_ports = get_tcp_ports(PORTS),
+				udp_ports = get_udp_ports(PORTS),
+				ping = PING
+			)
 			self.app.push_screen(MonitorMenu())
+			NODEPROBE.run()
 	def on_checkbox_changed(self, event : Checkbox.Changed) -> None :
 		if (event.checkbox.id == "PingCheckbox") :
 			PING = event.checkbox.value
@@ -113,6 +123,18 @@ class MonitorMenu(Screen) :
 
 	def on_mount(self) -> None :
 		self.title = TITLE
+
+	def on_button_pressed(self, event : Button.Pressed) -> None :
+		global IFACE, PORTS, IP_INPUT_VALUE
+		match (event.button.id) :
+			case "ProbeAll" :
+				...
+			case "ProbeSelected" :
+				...
+			case "ClearLogs" :
+				...
+			case "BackMenu" :
+				self.app.pop_screen()
 
 	def on_data_table_cell_selected(self, event : DataTable.CellSelected) -> None :
 		...

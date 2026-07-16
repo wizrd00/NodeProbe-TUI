@@ -1,10 +1,17 @@
 from _structs import *
 from _exceptions import NodeProbeError
+from collections.abc import Iterator
 from ctypes import c_int, c_size_t
 from psutil import net_if_addrs, net_if_stats
 from socket import AF_INET, AF_PACKET, if_nametoindex, inet_pton
 from re import match
 from json import load
+
+pat = [
+	r"^((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d)|(?!\d))){4}(/([12]?\d|3[0-2]))?$", # matches formats like 192.168.1.1/24
+	r"^((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d))){3}((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)-(1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d))?$", # matches formats like 192.168.1.12-48
+	r"^(((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d)|(?!\d))){4}(\ |$)){1,}$" # matches formats like 10.10.1.1 10.10.1.2 10.10.1.5 etc.
+]
 
 def CHECK_STAT(stat : c_int, msg : str) :
 	if (stat != status_t.SUCCESS) :
@@ -58,11 +65,7 @@ def get_src_ip(iface : str) -> str :
 	raise ValueError(f"there is no IP address assocaited to \"{iface}\"")
 
 def check_ip_format(ip : str) -> bool :
-	pat = [
-		r"^((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d)|(?!\d))){4}(/([12]?\d|3[0-2]))?$",
-		r"^((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d))){3}((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)-(1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d))?$",
-		r"^(((1\d{2}|2[0-4]\d|25[0-5]|[1-9]?\d)(\.(?=\d)|(?!\d))){4}(\ |$)){1,}$"
-	]
+	global pat
 	return True if (match(pat[0], ip) or match(pat[1], ip) or match(pat[2], ip)) else False
 
 def get_input_placeholder(iface : str) -> str :
@@ -90,3 +93,14 @@ def get_suggestion_ports() -> list[tuple[int, str, str]] :
 
 def get_ifaces() -> dict_keys[str] :
 	return net_if_addrs().keys()
+
+def get_ip_range(ip : str) -> Iterator[str] :
+	# TODO
+	if (match(pat[0], ip)) :
+		...
+	elif (match(pat[1], ip)) :
+		...
+	elif (match(pat[2], ip)) :
+		...
+	else :
+		...
